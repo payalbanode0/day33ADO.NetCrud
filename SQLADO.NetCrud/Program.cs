@@ -12,7 +12,7 @@ namespace SQLADO.NetCrud
             EmployeeModel employee = new EmployeeModel();
 
 
-            employee.EmployeeName = "Eren Jeager";
+            employee.EmployeeName = "Payal";
             employee.PhoneNumber = "8106529025";
             employee.Address = "25-4-710";
             employee.Department = "Hr";
