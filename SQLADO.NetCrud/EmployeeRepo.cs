@@ -81,7 +81,7 @@ namespace SQLADO.NetCrud
             {
                 using (this.connection)
                 {
-                    SqlCommand command = new SqlCommand("AddEmployeeDetails", this.connection);
+                    SqlCommand command = new SqlCommand("SpAddEmployeeDetails", this.connection);
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@EmployeeName", model.EmployeeName);
                     command.Parameters.AddWithValue("@PhoneNumber", model.PhoneNumber);
