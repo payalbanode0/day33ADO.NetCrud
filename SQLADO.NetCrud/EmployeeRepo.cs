@@ -111,7 +111,35 @@ namespace SQLADO.NetCrud
                 throw new Exception(ex.Message);
             }
         }
+        //UC-3 
+        public void Update(EmployeeModel model)
+        {
+            string query = @"Update Employee_payroll Set BasicPay=3000000.00 Where EmployeeName='Terisa'";
+            SqlCommand cmd = new SqlCommand(query, this.connection);
+            this.connection.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
+            EmployeeModel employeeModel = new EmployeeModel();
 
+            if (dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    employeeModel.EmployeeName = dr.GetString(1);
+                    employeeModel.BasicPay = dr.GetDouble(6);
+                    //display retieved record
+
+                    Console.WriteLine("{0},{1},{2},{3},{4},{5},{6}", employeeModel.EmployeeID, employeeModel.EmployeeName, employeeModel.PhoneNumber, employeeModel.Address, employeeModel.Department, employeeModel.Gender, employeeModel.BasicPay);
+                    Console.WriteLine("\n");
+
+
+                }
+            }
+
+        }
 
     }
 }
+
+
+
+    
