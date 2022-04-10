@@ -111,7 +111,7 @@ namespace SQLADO.NetCrud
                 throw new Exception(ex.Message);
             }
         }
-        //UC - 3  
+        //UC - 3 
         public void Update(EmployeeModel model)
         {
             string query = @"Update Employee_payroll Set BasicPay=3000000.00 Where EmployeeName='Terisa'";
@@ -134,7 +134,7 @@ namespace SQLADO.NetCrud
             }
 
         }
-        //UC - 4
+        //UC - 5
         public void Retrieve(EmployeeModel model)
         {
             string query = @"Select * From Employee_payroll Where StartDate Between '1894-06-23' And '2022-04-07'";
