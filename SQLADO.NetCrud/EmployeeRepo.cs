@@ -12,6 +12,7 @@ namespace SQLADO.NetCrud
     {
         public static string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Database=payroll_service;Trusted_Connection=True";
         SqlConnection connection = new SqlConnection(connectionString);
+        //UC 1
         public void GetAllEmployee()
         {
             try
@@ -75,6 +76,7 @@ namespace SQLADO.NetCrud
                 this.connection.Close();
             }
         }
+        //UC 2
         public bool AddEmployee(EmployeeModel model)
         {
             try
@@ -169,7 +171,7 @@ namespace SQLADO.NetCrud
             this.connection.Close();
 
         }
-        //UC - 7
+        //UC - 6
         public void Aggregate(EmployeeModel model)
         {
             string query = @"Select Sum(BasicPay) From Employee_payroll Where Gender ='M' Group By Gender";
@@ -335,13 +337,76 @@ namespace SQLADO.NetCrud
             }
             this.connection.Close();
 
-
-
-
-
-
         }
+        //UC 6 Add new Employee only name and Payroll
+        public void AddPayRollOfNewEmployee(EmployeeModel model)
+        {
+            EmployeeModel employeeModel = new EmployeeModel();
 
+            try
+            {
+                using (this.connection)
+                {
+                    SqlCommand command = new SqlCommand("SpAddEmployeeDetails", this.connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@EmployeeName", model.EmployeeName);
+                    command.Parameters.AddWithValue("@PhoneNumber", model.PhoneNumber);
+                    command.Parameters.AddWithValue("@Address", model.Address);
+                    command.Parameters.AddWithValue("@Department", model.Department);
+                    command.Parameters.AddWithValue("@Gender", model.Gender);
+                    command.Parameters.AddWithValue("@BasicPay", model.BasicPay);
+                    command.Parameters.AddWithValue("@Deductions", model.Deductions);
+                    command.Parameters.AddWithValue("@TaxablePay", model.TaxablePay);
+                    command.Parameters.AddWithValue("@Tax", model.Tax);
+                    command.Parameters.AddWithValue("@NetPay", model.NetPay);
+                    command.Parameters.AddWithValue("@StartDate", model.StartDate);
+                    command.Parameters.AddWithValue("@City", model.City);
+                    command.Parameters.AddWithValue("@Country", model.Country);
 
+                    this.connection.Open();
+                    var result = command.ExecuteNonQuery();
+                    this.connection.Close();
+                    string query = @"Select EmployeeName,BasicPay,Deductions,TaxablePay,Tax,NetPay From Employee_payroll Where EmployeeName='Levi Ackermen'";
+                    SqlCommand cmd = new SqlCommand(query, this.connection);
+                    this.connection.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    //check if there are records
+
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+
+                            employeeModel.EmployeeName = dr.GetString(0);
+                            employeeModel.BasicPay = dr.GetDouble(1);
+                            employeeModel.Deductions = dr.GetDouble(2);
+                            employeeModel.TaxablePay = dr.GetDouble(3);
+                            employeeModel.Tax = dr.GetDouble(4);
+                            employeeModel.NetPay = dr.GetDouble(5);
+
+                            //display retieved record
+
+                            Console.WriteLine("{0},{1},{2},{3},{4},{5}", employeeModel.EmployeeName, employeeModel.BasicPay, employeeModel.Deductions, employeeModel.TaxablePay, employeeModel.Tax, employeeModel.NetPay);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("No Data Found");
+                    }
+                    //Close Data Reader
+                    dr.Close();
+                    this.connection.Close();
+
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
+        }
     }
 }
