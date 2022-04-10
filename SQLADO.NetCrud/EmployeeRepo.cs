@@ -10,7 +10,7 @@ namespace SQLADO.NetCrud
 {
     class EmployeeRepo
     {
-        public static string connectionString = @"Data Source=localhost\SQLEXPRESS;Database=payroll_service;Trusted_Connection=True";
+        public static string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Database=payroll_service;Trusted_Connection=True";
         SqlConnection connection = new SqlConnection(connectionString);
         public void GetAllEmployee()
         {
